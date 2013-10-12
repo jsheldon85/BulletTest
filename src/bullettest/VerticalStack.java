@@ -4,6 +4,7 @@
  */
 package bullettest;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyEvent;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -19,17 +20,16 @@ import static java.lang.Math.*;
  * @author vsc243
  */
 
-
-
-
-
 public class VerticalStack extends TestbedTest {
     Body body;
+    Body bomb;
+    double screenWidthMeters;
+    double screenHeightMeters;
     
     public void initTest(boolean argDeserialized) {
     
         setTitle("Vertical Stack");
-
+        
         getWorld().setGravity(new Vec2(0, 0));
     
 
@@ -44,6 +44,10 @@ public class VerticalStack extends TestbedTest {
         bodyDef.allowSleep = false;
         body = getWorld().createBody(bodyDef);
         body.createFixture(polygonShape, 5f);
+        screenHeightMeters = pixelToMeter(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
+        screenWidthMeters = pixelToMeter(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width);
+        System.out.println("Screen width in meters:" + screenWidthMeters);
+        System.out.println("Screen height in meters:" + screenHeightMeters);
 
         //body.applyLinearImpulse(new Vec2(0, 500), new Vec2(getWorld().getBodyList().getWorldCenter()));
       
@@ -67,20 +71,35 @@ public class VerticalStack extends TestbedTest {
                 case KeyEvent.VK_LEFT:
                     body.applyLinearImpulse(new Vec2(-200, 0), new Vec2(body.getWorldCenter()));
                     break;
-                    
+                case KeyEvent.VK_PERIOD:
+                    if(bomb != null)System.out.println(bomb.getWorldCenter());
+                    break;
                     
         }
         }
     }
     
-    @Override
+    /*@Override
     public void lanchBomb() {
         super.lanchBomb();
-        bomb = getBomb(); //fix this, but yay for re-figuring out super.!
-    }
+        Body newBomb = getBomb();
+        newBomb.applyLinearImpulse(new Vec2(5000, 0), new Vec2(body.getWorldCenter()));
+          //fix this, but yay for re-figuring out super.!
+    }*/
       
+    @Override
+    public synchronized void launchBomb(Vec2 position, Vec2 velocity){
+        super.launchBomb(position, velocity);
+        bomb = getBomb();
+        bomb.applyLinearImpulse(new Vec2(0, 0), new Vec2(body.getWorldCenter()));
+        System.out.println(bomb.getWorldCenter());
+//        System.out.println(getWorld());
+        System.out.println(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds());
+    }
     
-    
+    private double pixelToMeter(double pixels){
+        return pixels * .1;
+    }
 
   @Override
   public String getTestName() {
