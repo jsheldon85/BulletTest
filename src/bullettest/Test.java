@@ -11,8 +11,9 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
-import static java.lang.Math.*;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -20,7 +21,7 @@ import static java.lang.Math.*;
  * @author vsc243
  */
 
-public class VerticalStack extends TestbedTest {
+public class Test extends TestbedTest {
     Body body;
     Body bomb;
     double screenWidthMeters;
@@ -30,7 +31,11 @@ public class VerticalStack extends TestbedTest {
     
         setTitle("Vertical Stack");
         
-        getWorld().setGravity(new Vec2(0, 0));
+        getWorld().setGravity(new Vec2(0, -9.8f));
+        float timeStep = 1.0f / 60.f;
+        int velocityIterations = 10;
+        int positionIterations = 8;
+        //getWorld().Step(timeStep, velocityIterations, positionIterations);
     
 
     //for (int i = 0; i < 10; i++) {
@@ -91,14 +96,47 @@ public class VerticalStack extends TestbedTest {
     public synchronized void launchBomb(Vec2 position, Vec2 velocity){
         super.launchBomb(position, velocity);
         bomb = getBomb();
-        bomb.applyLinearImpulse(new Vec2(0, 0), new Vec2(body.getWorldCenter()));
+        bomb.applyLinearImpulse(new Vec2(0f, 0f), new Vec2(body.getWorldCenter()));
         System.out.println(bomb.getWorldCenter());
 //        System.out.println(getWorld());
-        System.out.println(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds());
+        //System.out.println(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds());
+    }
+    
+    @Override
+    public synchronized void step(TestbedSettings settings){
+        super.step(settings);
+        if (bomb != null){
+//            if (    bomb.getWorldCenter().x > screenWidthMeters / 2
+//                    || bomb.getWorldCenter().x < screenWidthMeters / 2
+//                    || bomb.getWorldCenter().y < -37
+//                    || bomb.getWorldCenter().y > 58){
+//
+//                int error = 1/0;
+//            }
+            
+            bombHitEdgeLogic();
+            //System.out.println(bomb.getWorldCenter());
+        }
     }
     
     private double pixelToMeter(double pixels){
         return pixels * .1;
+    }
+    
+    private boolean isBombOffscreen(){
+        return (   bomb.getWorldCenter().x > screenWidthMeters / 2
+                || bomb.getWorldCenter().x < -(screenWidthMeters / 2)
+                || bomb.getWorldCenter().y < -38
+                || bomb.getWorldCenter().y > 58);
+    }
+    
+    private void bombHitEdgeLogic(){
+        if(isBombOffscreen()){
+            
+            //JOptionPane.showMessageDialog(null, "Linear Velocity is: " + bomb.m_linearVelocity);
+            getWorld().destroyBody(bomb);
+            bomb = null;
+        }
     }
 
   @Override
