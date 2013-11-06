@@ -22,6 +22,9 @@ import org.jbox2d.testbed.framework.j2d.TestPanelJ2D;
 public class ProjectMain {
     
     public static void main(String[] args){
+        Machine leftNode;
+        Machine rightNode;
+        Machine thisNode;
         
         GraphicsDevice gdevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         TestbedModel model = new TestbedModel();

@@ -125,15 +125,13 @@ public class Test extends TestbedTest {
     
     private boolean isBombOffscreen(){
         return (   bomb.getWorldCenter().x > screenWidthMeters / 2
-                || bomb.getWorldCenter().x < -(screenWidthMeters / 2)
-                || bomb.getWorldCenter().y < -38
-                || bomb.getWorldCenter().y > 58);
+                || bomb.getWorldCenter().x < -(screenWidthMeters / 2)); //Don't care about y, only x
     }
     
     private void bombHitEdgeLogic(){
         if(isBombOffscreen()){
             
-            //JOptionPane.showMessageDialog(null, "Linear Velocity is: " + bomb.m_linearVelocity);
+            JOptionPane.showMessageDialog(null, "Linear Velocity is: " + bomb.m_linearVelocity);
             getWorld().destroyBody(bomb);
             bomb = null;
         }
