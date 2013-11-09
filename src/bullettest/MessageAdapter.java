@@ -12,12 +12,9 @@ public class MessageAdapter {
     final static String serverIp = "216.159.152.221";
     Integer reqNum = 0;
     
-    Machine leftNode;
-    Machine rightNode;
-    
     Boolean isHost;
     
-    String absoluteDistance="0"; //TODO!!!
+    //String absoluteDistance="0";
     String hostIp = "123.123.1234"; //DUMMY IP, get from GUI user I/O
     
     protected void encodeRequest(String[] params, Boolean toServer){
@@ -84,13 +81,11 @@ public class MessageAdapter {
     }
     
     private void updateSide(Boolean isRight, Machine node){
-        if(isRight) rightNode = node;
-        else leftNode = node;
+        Boundary.setMachine(isRight, node);
     }
     
     private void removeSide(Boolean isRight){
-        if(isRight) rightNode = null;
-        else leftNode = null;
+        Boundary.removeMachine(isRight);
     }
     
     private void createObject(float posY, float velX, float velY){
@@ -101,22 +96,22 @@ public class MessageAdapter {
         //MachineList game = new MachineList();
         //hostIPMachineListMap.put(node.ip, game);
         isHost = true;
-        String[] args = {"hostGame", absoluteDistance};
+        String[] args = {"hostGame", Client.getAbsDistance()};
         encodeRequest(args, true); //command | distance
     }
     
     public void joinGame(String hostIP, Machine node){
-        String[] args = {"joinGame", absoluteDistance};
+        String[] args = {"joinGame", Client.getAbsDistance()};
         encodeRequest(args, true);
     }
     
     public void leaveGame(String hostIP, Machine node){
-        String[] args = {"leaveGame", absoluteDistance};
+        String[] args = {"leaveGame", Client.getAbsDistance()};
         encodeRequest(args, true);
     }
     
     public void changeDistance(Machine node){
-        String[] args = {"changeDistance", absoluteDistance};
+        String[] args = {"changeDistance", Client.getAbsDistance()};
         encodeRequest(args, true);
     }
 }
