@@ -7,11 +7,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MessageAdapter {
+    
+    public MessageAdapter(Boundary boundary){
+        this.boundary = boundary;
+    }
+    
     static LinkedBlockingQueue<ArrayList<String>> toUpdate = new LinkedBlockingQueue();
     HashMap<String, String[]> serverRequests = new HashMap();
     final static String serverIp = "216.159.152.221";
     Integer reqNum = 0;
-    
+    Boundary boundary;
     Boolean isHost;
     
     //String absoluteDistance="0";
@@ -52,13 +57,13 @@ public class MessageAdapter {
             ArrayList<String> temp = new ArrayList<>(2);
             temp.add(ipAddress);
             switch(params[0]){
-                case("updateSide"): // left or right, distance, ip
+                case("updateSide"): // hostIP, distance, ip
                     System.out.println("updateSide");
-                    updateSide(params[1].equals("right"), new Machine(params[3],Float.parseFloat(params[2])));
+                    updateSide(params[1], new Machine(params[3],Float.parseFloat(params[2])));
                     break;
-                case("removeSide"): // left or right
+                case("removeSet"): // hostIP
                    System.out.println("removeSide");
-                   removeSide(params[1].equals("right"));
+                   removeSet(params[1]);
                    break;
                 case("createObject"): //posY, velX, velY
                     System.out.println("createObject");
@@ -80,12 +85,12 @@ public class MessageAdapter {
         }
     }
     
-    private void updateSide(Boolean isRight, Machine node){
-        Boundary.setMachine(isRight, node);
+    private void updateSide(String hostIP, Machine node){
+        boundary.updateSide(hostIP, node);
     }
     
-    private void removeSide(Boolean isRight){
-        Boundary.removeMachine(isRight);
+    private void removeSet(String hostIP){
+        boundary.removeSet(hostIP);
     }
     
     private void createObject(float posY, float velX, float velY){

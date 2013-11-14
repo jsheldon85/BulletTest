@@ -29,7 +29,7 @@ public class Test extends TestbedTest {
     
     public void initTest(boolean argDeserialized) {
     
-        setTitle("Vertical Stack");
+        setTitle("Angry Physics");
         
         getWorld().setGravity(new Vec2(0, -9.8f));
         float timeStep = 1.0f / 60.f;

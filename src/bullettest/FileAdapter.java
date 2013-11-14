@@ -11,17 +11,19 @@ public class FileAdapter {
     PrintWriter out;
     BufferedReader in;
     
-    public FileAdapter(){
+    public FileAdapter(){}
+
+    
+    public void writeDistance(String absDistance){
         try{
             //Will create file if it doesn't exist
             out = new PrintWriter("distance.txt");
         }
         catch(Exception e){
+            System.out.println("Error creating PrintWriter!");
         }
-    }
-    
-    public void writeDistance(String absDistance){
         out.println(absDistance);
+        out.close();
     }
     
     public String initialRead(){

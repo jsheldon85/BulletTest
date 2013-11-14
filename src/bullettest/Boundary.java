@@ -1,30 +1,78 @@
 package bullettest;
 
+import java.util.ArrayList;
+
 public class Boundary {
-    private static Machine leftNode;
-    private static Machine rightNode;
+
+    private ArrayList<String> hostIPList;
+    private ArrayList<String> ipAddresses;
+    private ArrayList<Double> leftDistances;
+    private ArrayList<Double> rightDistances;
     
-    public static void Boundary(){
-        leftNode = new Machine("", 0);
-        rightNode = new Machine("", 0);
+    public void Boundary(){
+        hostIPList = new ArrayList();
+        ipAddresses = new ArrayList();
+        
+        leftDistances = new ArrayList();
+        rightDistances = new ArrayList();
     }
     
-    protected static void setMachine(boolean isRight, Machine node){
-        if(isRight) rightNode = node;
-        else leftNode = node;
+    protected void setGroup(String hostIP, double leftDist, double rightDist){
+        int index = hostIPList.indexOf(hostIP);
+        if(index!=-1){
+            leftDistances.set(index, leftDist);
+            rightDistances.set(index, rightDist);
+        }
+        else{
+            ipAddresses.add(hostIP);
+            leftDistances.add(leftDist);
+            rightDistances.add(rightDist);
+        }
     }
     
-    protected static void removeMachine(boolean isRight){
-        Machine node = new Machine("", 0);
-        if(isRight) rightNode = node;
-        else leftNode = node;
+    protected void updateSide(String hostIP, Machine node){ //node is new peer
+        int index = ipAddresses.indexOf(hostIP);
+        double newDistance = node.distance;
+        if(index==-1){
+            ipAddresses.add(hostIP);
+            if(node.distance < 0){
+                leftDistances.add(newDistance);
+            } else {
+                rightDistances.add(newDistance);
+            }
+        }
+        else{
+            if(node.distance < 0){
+                leftDistances.set(index, newDistance);
+            } else {
+                rightDistances.set(index, newDistance);
+            }
+        }
     }
     
-    public static float getRightDistance(){
-        return rightNode.distance;
+    protected void removeSet(String hostIP){
+        int index = ipAddresses.indexOf(hostIP);
+        if(index!=-1){
+            hostIPList.remove(index);
+            ipAddresses.remove(index);
+            leftDistances.remove(index);
+            rightDistances.remove(index);
+        }
     }
     
-    public static float getLeftDistance(){
-        return leftNode.distance;
+    public String getLeftAddress(double distance){
+        int index = leftDistances.indexOf(distance);
+        if(index!=-1){
+            return ipAddresses.get(index);
+        }
+        return "";
+    }
+    
+    public String getRightAddress(double distance){
+        int index = rightDistances.indexOf(distance);
+        if(index!=-1){
+            return ipAddresses.get(index);
+        }
+        return "";
     }
 }
