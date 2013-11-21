@@ -14,6 +14,7 @@ class NetworkPusher extends Thread{
     
     NetworkPusher(LinkedBlockingQueue<ArrayList<String>> toUpdate) {
         this.toUpdate = toUpdate;
+        start();
    }
 
     @Override

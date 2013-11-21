@@ -4,75 +4,69 @@ import java.util.ArrayList;
 
 public class Boundary {
 
-    private ArrayList<String> hostIPList;
-    private ArrayList<String> ipAddresses;
-    private ArrayList<Double> leftDistances;
-    private ArrayList<Double> rightDistances;
+    private ArrayList<String> presentGamesIPList;
+    private ArrayList<String> joinableGamesIPList;
+    private ArrayList<Machine> leftMachines;
+    private ArrayList<Machine> rightMachines;
     
     public void Boundary(){
-        hostIPList = new ArrayList();
-        ipAddresses = new ArrayList();
-        
-        leftDistances = new ArrayList();
-        rightDistances = new ArrayList();
+        presentGamesIPList = new ArrayList();
+        leftMachines = new ArrayList();
+        rightMachines = new ArrayList();
     }
     
-    protected void setGroup(String hostIP, double leftDist, double rightDist){
-        int index = hostIPList.indexOf(hostIP);
-        if(index!=-1){
-            leftDistances.set(index, leftDist);
-            rightDistances.set(index, rightDist);
-        }
-        else{
-            ipAddresses.add(hostIP);
-            leftDistances.add(leftDist);
-            rightDistances.add(rightDist);
-        }
-    }
-    
-    protected void updateSide(String hostIP, Machine node){ //node is new peer
-        int index = ipAddresses.indexOf(hostIP);
+    public void updateSide(String hostIP, Machine node){ //node is new peer
+        int index = presentGamesIPList.indexOf(hostIP);
         double newDistance = node.distance;
         if(index==-1){
-            ipAddresses.add(hostIP);
-            if(node.distance < 0){
-                leftDistances.add(newDistance);
+            presentGamesIPList.add(hostIP);
+            if(newDistance < 0){
+                leftMachines.add(node);
             } else {
-                rightDistances.add(newDistance);
+                rightMachines.add(node);
             }
         }
         else{
-            if(node.distance < 0){
-                leftDistances.set(index, newDistance);
+            if(newDistance < 0){
+                leftMachines.set(index, node);
             } else {
-                rightDistances.set(index, newDistance);
+                rightMachines.set(index, node);
             }
         }
     }
     
-    protected void removeSet(String hostIP){
-        int index = ipAddresses.indexOf(hostIP);
+    public void updateJoinableGames(String[] newIPList){
+        ArrayList<String> newJoinableGamesIPList = new ArrayList();
+        for(String ip : newIPList){
+            if(!joinableGamesIPList.contains(ip)) newJoinableGamesIPList.add(ip);
+        }
+        joinableGamesIPList = newJoinableGamesIPList;
+    }
+    
+    public void removeSet(String hostIP){
+        int index = presentGamesIPList.indexOf(hostIP);
         if(index!=-1){
-            hostIPList.remove(index);
-            ipAddresses.remove(index);
-            leftDistances.remove(index);
-            rightDistances.remove(index);
+            presentGamesIPList.remove(index);
+            leftMachines.remove(index);
+            rightMachines.remove(index);
         }
     }
     
     public String getLeftAddress(double distance){
-        int index = leftDistances.indexOf(distance);
-        if(index!=-1){
-            return ipAddresses.get(index);
-        }
-        return "";
+        return getAddress(distance, false);
     }
     
     public String getRightAddress(double distance){
-        int index = rightDistances.indexOf(distance);
-        if(index!=-1){
-            return ipAddresses.get(index);
+        return getAddress(distance, true);
+    }
+    
+    private String getAddress(double distance, boolean isRight){
+        ArrayList<Machine> machines = isRight? rightMachines: leftMachines;
+        int index=0;
+        for(; index<machines.size(); index++){
+            if(machines.get(index).distance==distance) break;
         }
-        return "";
+        if(index==machines.size()) return "";
+        return machines.get(index).ip;
     }
 }

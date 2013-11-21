@@ -15,9 +15,9 @@ import java.net.Socket;
  * @author Brian
  */
 class NetworkListener extends Thread{
-    MessageAdapter adapter;
+    InputAdapter adapter;
     
-    public NetworkListener(MessageAdapter adapter){
+    public NetworkListener(InputAdapter adapter){
         this.adapter = adapter;
     }
     
