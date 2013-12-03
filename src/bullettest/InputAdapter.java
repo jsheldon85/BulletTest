@@ -1,7 +1,5 @@
 package bullettest;
 
-import java.util.ArrayList;
-
 public class InputAdapter {
     Boundary boundary;
     
@@ -12,8 +10,6 @@ public class InputAdapter {
     //cmd | positionx | positiony | velocityx | velocityyyyyyyyyy!!!!!!
     public void parse(String message,String ipAddress){//General Form: command | param1 | param2 | ... | paramn
         String[] params = message.split(" \\| ");
-        ArrayList<String> temp = new ArrayList<>(2);
-        temp.add(ipAddress);
         switch(params[0]){
             case("updateSide"): // hostIP, distance, ip
                 System.out.println("updateSide");
@@ -47,7 +43,7 @@ public class InputAdapter {
         boundary.removeSet(hostIP);
     }
     
-    private void createObject(float posY, float velX, float velY){
+    private void createObject(float posY, float velX, float velY){ //we should probably pass posX now, too, or we'll have to find the distance in boundary based on the IP it came from
         //Create the object in JBox2D
     }
 }

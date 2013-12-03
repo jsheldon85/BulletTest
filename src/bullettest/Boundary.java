@@ -9,38 +9,45 @@ public class Boundary {
     private ArrayList<Machine> leftMachines;
     private ArrayList<Machine> rightMachines;
     
-    public void Boundary(){
+    public Boundary(){
         presentGamesIPList = new ArrayList();
+        joinableGamesIPList = new ArrayList();
+        joinableGamesIPList.add("1.1.1.1");
+        joinableGamesIPList.add("2.2.2.2");
         leftMachines = new ArrayList();
         rightMachines = new ArrayList();
     }
     
+    public String[] getPresentGamesIPList(){
+        String[] list = new String[presentGamesIPList.size()];
+        presentGamesIPList.toArray(list);
+        return list;
+    }
+    
+    public String[] getjoinableGamesIPList(){
+        String[] list = new String[joinableGamesIPList.size()];
+        joinableGamesIPList.toArray(list);
+        return list;
+    }
+    
+    
+    
     public void updateSide(String hostIP, Machine node){ //node is new peer
         int index = presentGamesIPList.indexOf(hostIP);
-        double newDistance = node.distance;
-        if(index==-1){
-            presentGamesIPList.add(hostIP);
-            if(newDistance < 0){
-                leftMachines.add(node);
-            } else {
-                rightMachines.add(node);
-            }
-        }
+        if(index==-1) addInitialSet(hostIP, node);
         else{
-            if(newDistance < 0){
-                leftMachines.set(index, node);
-            } else {
-                rightMachines.set(index, node);
-            }
+            if(node.distance < 0) leftMachines.set(index, node);
+            else rightMachines.set(index, node);
         }
     }
     
-    public void updateJoinableGames(String[] newIPList){
-        ArrayList<String> newJoinableGamesIPList = new ArrayList();
-        for(String ip : newIPList){
-            if(!joinableGamesIPList.contains(ip)) newJoinableGamesIPList.add(ip);
-        }
-        joinableGamesIPList = newJoinableGamesIPList;
+    private void addInitialSet(String hostIP, Machine node){
+        presentGamesIPList.add(hostIP);
+        boolean isRight = 0<node.distance;
+        ArrayList<Machine> targetList = isRight? rightMachines:leftMachines;
+        ArrayList<Machine> otherList = isRight? leftMachines:rightMachines;
+        targetList.add(node);
+        otherList.add(new Machine("",0));
     }
     
     public void removeSet(String hostIP){
@@ -52,6 +59,14 @@ public class Boundary {
         }
     }
     
+    public void updateJoinableGames(String[] newIPList){
+        ArrayList<String> newJoinableGamesIPList = new ArrayList();
+        for(String ip : newIPList){
+            if(!joinableGamesIPList.contains(ip)) newJoinableGamesIPList.add(ip);
+        }
+        joinableGamesIPList = newJoinableGamesIPList;
+    }
+    
     public String getLeftAddress(double distance){
         return getAddress(distance, false);
     }
@@ -61,7 +76,7 @@ public class Boundary {
     }
     
     private String getAddress(double distance, boolean isRight){
-        ArrayList<Machine> machines = isRight? rightMachines: leftMachines;
+        ArrayList<Machine> machines = isRight? rightMachines:leftMachines;
         int index=0;
         for(; index<machines.size(); index++){
             if(machines.get(index).distance==distance) break;

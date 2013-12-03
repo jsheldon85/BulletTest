@@ -32,7 +32,6 @@ public class Client {
     private static FileAdapter adapter;
     private static Boundary boundary;
     private static ButtonListener listener;
-    private static OutputAdapter output;
     private static InputAdapter input;
     
     public static void setAbsDistance(String newDistance){
@@ -98,7 +97,6 @@ public class Client {
         toolbar.add(helpButton);
         testbed.add(toolbar, "North");
         
-        //EVERYTHING IS BROKEN!!!!!!!!!!!!!!!!!!! jk fixed it
         testbed.setVisible(true);
         
         System.out.println(testbed.getAccessibleContext().getAccessibleComponent().getBounds());
@@ -113,21 +111,28 @@ public class Client {
             switch(e.getActionCommand()){
                 case("Host Game"):
                     System.out.println("Host Game Button");
-                    //Toolkit.getDefaultToolkit().beep();
-                    output.hostGame(absDistance);
+                    OutputAdapter.hostGame(absDistance);
                     break;
                 case("Join Game"):
                     System.out.println("Join Game Button");
-                    output.joinGame("0.0.0.0", absDistance);
+                    String joinIP = (String)JOptionPane.showInputDialog(null, "Choose a game to join...", "Join a game", JOptionPane.PLAIN_MESSAGE, null, boundary.getjoinableGamesIPList(), null);
+                    if (joinIP != null){
+                        System.out.println("Join Game with IP " + joinIP);
+                        OutputAdapter.joinGame(joinIP, absDistance);
+                    }
                     break;
                 case("Leave Game"):
                     System.out.println("Leave Game Button");
-                    output.leaveGame("0.0.0.0");
+                    String leaveIP = (String)JOptionPane.showInputDialog(null, "Choose a game to leave...", "Leave a game", JOptionPane.PLAIN_MESSAGE, null, boundary.getPresentGamesIPList(), null);
+                    if (leaveIP != null){
+                        System.out.println("Leave Game with IP " + leaveIP);
+                        OutputAdapter.leaveGame(leaveIP);
+                    }
                     break;
                 case("Change Distance"):
                     System.out.println("Change Distance Button");
                     setAbsDistance("");
-                    output.changeDistance(absDistance);
+                    OutputAdapter.changeDistance(absDistance);
                     break;
                 case("Help"):
                     System.out.println("Help Button");

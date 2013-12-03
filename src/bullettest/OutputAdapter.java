@@ -9,15 +9,15 @@ import java.util.logging.Logger;
 
 public class OutputAdapter {
     private static LinkedBlockingQueue<ArrayList<String>> toUpdate = new LinkedBlockingQueue();
-    private final static String serverIp = "216.159.152.221";
-    private static Boolean isHost;
+    private final static String serverIp = "127.0.0.1";
+    private static Boolean isHost = false;
     private static String IP;
     
     public static void start(){
         try {IP=InetAddress.getLocalHost().getHostAddress();}
         catch (UnknownHostException ex){Logger.getLogger(OutputAdapter.class.getName()).log(Level.SEVERE, null, ex);}
         NetworkPusher pusher = new NetworkPusher(toUpdate);
-        pusher.start();
+        //pusher.start();
     }
     
     public static void joinGame(String hostIP, String absDistance){
