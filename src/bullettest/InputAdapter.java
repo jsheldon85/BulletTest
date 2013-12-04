@@ -5,6 +5,8 @@ public class InputAdapter {
     
     public InputAdapter(Boundary boundary){
         this.boundary = boundary;
+        NetworkListener in = new NetworkListener(this);
+        in.start();
     }
     
     //cmd | positionx | positiony | velocityx | velocityyyyyyyyyy!!!!!!
@@ -21,7 +23,8 @@ public class InputAdapter {
                 break;
             case("updateGames"):// n host IPs
                 System.out.println("updateGames");
-                boundary.updateJoinableGames(params[1].split(","));
+                if(params[1].equals("")) boundary.updateJoinableGames(new String[]{});
+                else boundary.updateJoinableGames(params[1].split(","));
                 break;
             case("createObject"): //posY, velX, velY
                 System.out.println("createObject");

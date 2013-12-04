@@ -23,6 +23,7 @@ class NetworkListener extends Thread{
     
     @Override
     public void run(){
+        System.out.println("Started network listener");
         try{
             ServerSocket sock = new ServerSocket(2002);
             while(true){//while logged in

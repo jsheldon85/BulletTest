@@ -115,6 +115,7 @@ public class Client {
                     break;
                 case("Join Game"):
                     System.out.println("Join Game Button");
+                    OutputAdapter.getHosts();
                     String joinIP = (String)JOptionPane.showInputDialog(null, "Choose a game to join...", "Join a game", JOptionPane.PLAIN_MESSAGE, null, boundary.getjoinableGamesIPList(), null);
                     if (joinIP != null){
                         System.out.println("Join Game with IP " + joinIP);
