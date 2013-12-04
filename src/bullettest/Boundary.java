@@ -12,8 +12,6 @@ public class Boundary {
     public Boundary(){
         presentGamesIPList = new ArrayList();
         joinableGamesIPList = new ArrayList();
-        joinableGamesIPList.add("1.1.1.1");
-        joinableGamesIPList.add("2.2.2.2");
         leftMachines = new ArrayList();
         rightMachines = new ArrayList();
     }
