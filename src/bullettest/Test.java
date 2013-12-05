@@ -26,6 +26,11 @@ public class Test extends TestbedTest {
     Body bomb;
     double screenWidthMeters;
     double screenHeightMeters;
+    Boundary boundary;
+    
+    public Test(Boundary boundary){
+        this.boundary = boundary;
+    }
     
     public void initTest(boolean argDeserialized) {
     
@@ -114,7 +119,8 @@ public class Test extends TestbedTest {
 //                int error = 1/0;
 //            }
             
-            bombHitEdgeLogic();
+            //bombHitEdgeLogic();
+            sendBullet();
             //System.out.println(bomb.getWorldCenter());
         }
     }
@@ -128,9 +134,14 @@ public class Test extends TestbedTest {
                 || bomb.getWorldCenter().x < -(screenWidthMeters / 2)); //Don't care about y, only x
     }
     
+    private void sendBullet(){
+        float bomb_x = bomb.getWorldCenter().x;
+        String ip = (bomb.m_linearVelocity.x < 0)? boundary.getLeftAddress(bomb_x) : boundary.getRightAddress(bomb_x);
+        if(!ip.equals("nullIP")) OutputAdapter.sendObject(ip, bomb.getWorldCenter().y, bomb.getLinearVelocity().x , bomb.getLinearVelocity().y);
+    }
+    
     private void bombHitEdgeLogic(){
         if(isBombOffscreen()){
-            
             JOptionPane.showMessageDialog(null, "Linear Velocity is: " + bomb.m_linearVelocity);
             getWorld().destroyBody(bomb);
             bomb = null;

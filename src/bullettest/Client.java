@@ -67,7 +67,7 @@ public class Client {
         
         //Set up test and add to model
         TestbedModel model = new TestbedModel();
-        Test test = new Test();
+        Test test = new Test(boundary);
         model.addCategory("Test tests");
         model.addTest(test);
         

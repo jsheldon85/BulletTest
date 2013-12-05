@@ -43,6 +43,11 @@ public class OutputAdapter {
         }
     }
     
+    public static void sendObject(String ip, Float pos_x, Float vel_x, Float vel_y){
+        String[] args = {"createObject", pos_x.toString(), vel_x.toString(), vel_y.toString()};
+        encodeRequest(args, false, ip);
+    }
+    
     public static void getHosts(){
         String[] args = {"getHosts"};
         encodeRequest(args, true);
