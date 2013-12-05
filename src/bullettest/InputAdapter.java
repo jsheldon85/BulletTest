@@ -23,7 +23,7 @@ public class InputAdapter {
                 break;
             case("updateGames"):// n host IPs
                 System.out.println("updateGames");
-                if(params[1].equals("")) boundary.updateJoinableGames(new String[]{});
+                if(params.length<2) boundary.updateJoinableGames(new String[]{}); //if no joinable games
                 else boundary.updateJoinableGames(params[1].split(","));
                 break;
             case("createObject"): //posY, velX, velY

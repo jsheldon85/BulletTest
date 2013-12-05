@@ -45,7 +45,7 @@ public class Boundary {
         ArrayList<Machine> targetList = isRight? rightMachines:leftMachines;
         ArrayList<Machine> otherList = isRight? leftMachines:rightMachines;
         targetList.add(node);
-        otherList.add(new Machine("",0));
+        otherList.add(new Machine("nullIP",0));
     }
     
     public void removeSet(String hostIP){
@@ -79,7 +79,7 @@ public class Boundary {
         for(; index<machines.size(); index++){
             if(machines.get(index).distance==distance) break;
         }
-        if(index==machines.size()) return "";
+        if(index==machines.size()) return "nullIP";
         return machines.get(index).ip;
     }
 }
