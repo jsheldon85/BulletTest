@@ -37,7 +37,7 @@ public class Test extends TestbedTest {
     
         setTitle("Angry Physics");
         
-        getWorld().setGravity(new Vec2(0, -9.8f));
+        getWorld().setGravity(new Vec2(0, 0));
         float timeStep = 1.0f / 60.f;
         int velocityIterations = 10;
         int positionIterations = 8;
