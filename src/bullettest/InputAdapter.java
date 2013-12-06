@@ -1,10 +1,14 @@
 package bullettest;
 
+import org.jbox2d.common.Vec2;
+
 public class InputAdapter {
     Boundary boundary;
+    Test test;
     
-    public InputAdapter(Boundary boundary){
+    public InputAdapter(Boundary boundary, Test test){
         this.boundary = boundary;
+        this.test = test;
         NetworkListener in = new NetworkListener(this);
         in.start();
     }
@@ -26,9 +30,9 @@ public class InputAdapter {
                 if(params.length<2) boundary.updateJoinableGames(new String[]{}); //if no joinable games
                 else boundary.updateJoinableGames(params[1].split(","));
                 break;
-            case("createObject"): //posY, velX, velY
+            case("createObject"): //posX, posY, velX, velY
                 System.out.println("createObject");
-                createObject(Float.parseFloat(params[0]),Float.parseFloat(params[1]),Float.parseFloat(params[2]));
+                createObject(Float.parseFloat(params[1]),Float.parseFloat(params[2]),Float.parseFloat(params[3]), Float.parseFloat(params[4]));
                 break;
         }
     }
@@ -41,7 +45,7 @@ public class InputAdapter {
         boundary.removeSet(hostIP);
     }
     
-    private void createObject(float posY, float velX, float velY){ //we should probably pass posX now, too, or we'll have to find the distance in boundary based on the IP it came from
-        //Create the object in JBox2D
+    private void createObject(float posX, float posY, float velX, float velY){ //we should probably pass posX now, too, or we'll have to find the distance in boundary based on the IP it came from
+        test.launchBomb(new Vec2(posX, posY), new Vec2(velX, velY));
     }
 }

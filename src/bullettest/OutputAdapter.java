@@ -43,8 +43,8 @@ public class OutputAdapter {
         }
     }
     
-    public static void sendObject(String ip, Float pos_x, Float vel_x, Float vel_y){
-        String[] args = {"createObject", pos_x.toString(), vel_x.toString(), vel_y.toString()};
+    public static void sendObject(String ip, Float pos_x, Float pos_y, Float vel_x, Float vel_y){
+        String[] args = {"createObject", pos_x.toString(), pos_y.toString(), vel_x.toString(), vel_y.toString()};
         encodeClientRequest(args, ip);
     }
     

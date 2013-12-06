@@ -78,7 +78,7 @@ public class Boundary {
         int index=0;
         for(; index<machines.size(); index++){
             double boundary = Math.abs(machines.get(index).distance);
-            if(Math.abs(oldDistance)<=boundary && boundary<=Math.abs(newDistance)) break;
+            if(Math.abs(oldDistance)<boundary && boundary<=Math.abs(newDistance)) break;
         }
         if(index==machines.size()) return "nullIP";
         return machines.get(index).ip;

@@ -27,7 +27,7 @@ public class Test extends TestbedTest {
     double screenWidthMeters;
     double screenHeightMeters;
     Boundary boundary;
-    Float oldBomb_x;
+    float oldBomb_x = 0f;
     
     public Test(Boundary boundary){
         this.boundary = boundary;
@@ -138,15 +138,11 @@ public class Test extends TestbedTest {
     private void sendBullet(){
         float bomb_x = bomb.getWorldCenter().x;
         
-        
         String ip = (bomb.m_linearVelocity.x < 0)? boundary.getLeftAddress(oldBomb_x, bomb_x) : boundary.getRightAddress(oldBomb_x, bomb_x);
         if(!ip.equals("nullIP")){
             System.out.println("sendBullet!");
-            OutputAdapter.sendObject(ip, bomb.getWorldCenter().y, bomb.getLinearVelocity().x , bomb.getLinearVelocity().y);
-            getWorld().destroyBody(bomb);
-            bomb = null;
+            OutputAdapter.sendObject(ip, bomb.getWorldCenter().x, bomb.getWorldCenter().y, bomb.getLinearVelocity().x , bomb.getLinearVelocity().y);
         }
-        
         oldBomb_x = bomb_x;
     }
     

@@ -35,6 +35,7 @@ public class Client {
     private static Boundary boundary;
     private static ButtonListener listener;
     private static InputAdapter input;
+    private Test test;
     
     public static void setAbsDistance(String newDistance){
         //TO USE DIALOG BOX PASS IN EMPTY STRING
@@ -57,9 +58,10 @@ public class Client {
     public static void main(String[] args){
         //Instantiate instance vars
         boundary = new Boundary();
+        Test test = new Test(boundary);
         adapter = new FileAdapter();
         listener = new ButtonListener();
-        input = new InputAdapter(boundary);
+        input = new InputAdapter(boundary, test);
         OutputAdapter.start();
         
         //Check file for distance and request input if necessary
@@ -69,7 +71,6 @@ public class Client {
         
         //Set up test and add to model
         TestbedModel model = new TestbedModel();
-        Test test = new Test(boundary);
         model.addCategory("Test tests");
         model.addTest(test);
         
