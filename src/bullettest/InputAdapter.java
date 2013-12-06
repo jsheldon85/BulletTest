@@ -32,7 +32,7 @@ public class InputAdapter {
                 break;
             case("createObject"): //posX, posY, velX, velY
                 System.out.println("createObject");
-                createObject(Float.parseFloat(params[1]),Float.parseFloat(params[2]),Float.parseFloat(params[3]), Float.parseFloat(params[4]));
+                createObject(ipAddress, Float.parseFloat(params[1]),Float.parseFloat(params[2]),Float.parseFloat(params[3]), Float.parseFloat(params[4]));
                 break;
         }
     }
@@ -45,7 +45,9 @@ public class InputAdapter {
         boundary.removeSet(hostIP);
     }
     
-    private void createObject(float posX, float posY, float velX, float velY){ //we should probably pass posX now, too, or we'll have to find the distance in boundary based on the IP it came from
-        test.launchBomb(new Vec2(posX, posY), new Vec2(velX, velY));
+    private void createObject(String ip, float posX, float posY, float velX, float velY){ //we should probably pass posX now, too, or we'll have to find the distance in boundary based on the IP it came from
+        //float delta =(float)(velX<0? boundary.getRightDistance(ip) : boundary.getLeftDistance(ip));
+        //System.out.println(delta);
+        test.launchBomb(new Vec2(velX*-1, posY), new Vec2(velX, velY));
     }
 }

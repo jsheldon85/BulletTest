@@ -65,6 +65,14 @@ public class Boundary {
         joinableGamesIPList = newJoinableGamesIPList;
     }
     
+    public double getLeftDistance(String ip){
+        return getDistance(ip, false);
+    }
+    
+    public double getRightDistance(String ip){
+        return getDistance(ip, true);
+    }
+    
     public String getLeftAddress(double oldDistance, double newDistance){
         return getAddress(oldDistance, newDistance, false);
     }
@@ -82,5 +90,13 @@ public class Boundary {
         }
         if(index==machines.size()) return "nullIP";
         return machines.get(index).ip;
+    }
+    
+    private double getDistance(String ip, Boolean isRight){
+        ArrayList<Machine> machines = isRight? rightMachines:leftMachines;
+        for(int i=0; i<machines.size(); i++){
+            if(machines.get(i).ip.equals(ip)) return machines.get(i).distance;
+        }
+        return 0;
     }
 }
