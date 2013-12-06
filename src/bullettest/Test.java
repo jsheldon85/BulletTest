@@ -137,7 +137,7 @@ public class Test extends TestbedTest {
     
     private void sendBullet(){
         float bomb_x = bomb.getWorldCenter().x;
-        oldBomb_x = bomb_x;
+        
         
         String ip = (bomb.m_linearVelocity.x < 0)? boundary.getLeftAddress(oldBomb_x, bomb_x) : boundary.getRightAddress(oldBomb_x, bomb_x);
         if(!ip.equals("nullIP")){
@@ -146,6 +146,8 @@ public class Test extends TestbedTest {
             getWorld().destroyBody(bomb);
             bomb = null;
         }
+        
+        oldBomb_x = bomb_x;
     }
     
     /*private void bombHitEdgeLogic(){
