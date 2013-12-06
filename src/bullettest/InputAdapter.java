@@ -28,12 +28,7 @@ public class InputAdapter {
                 break;
             case("createObject"): //posY, velX, velY
                 System.out.println("createObject");
-
-                float[] floatParams = new float[(params.length-2)];
-                for(int i=2;i<params.length;i++){
-                    floatParams[i-1] = Float.parseFloat(params[i]);
-                }
-                createObject(floatParams[0],floatParams[1],floatParams[2]);
+                createObject(Float.parseFloat(params[0]),Float.parseFloat(params[1]),Float.parseFloat(params[2]));
                 break;
         }
     }

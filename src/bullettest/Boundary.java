@@ -65,21 +65,20 @@ public class Boundary {
         joinableGamesIPList = newJoinableGamesIPList;
     }
     
-    public String getLeftAddress(double distance){
-        return getAddress(distance, false);
+    public String getLeftAddress(double oldDistance, double newDistance){
+        return getAddress(oldDistance, newDistance, false);
     }
     
-    public String getRightAddress(double distance){
-        return getAddress(distance, true);
+    public String getRightAddress(double oldDistance, double newDistance){
+        return getAddress(oldDistance, newDistance, true);
     }
     
-    private String getAddress(double distance, boolean isRight){
+    private String getAddress(double oldDistance, double newDistance, boolean isRight){
         ArrayList<Machine> machines = isRight? rightMachines:leftMachines;
         int index=0;
         for(; index<machines.size(); index++){
-            //if(machines.get(index).distance==distance) break;
-            if(isRight) if(machines.get(index).distance<=distance) break;
-            else if(machines.get(index).distance>=distance) break;
+            double boundary = Math.abs(machines.get(index).distance);
+            if(Math.abs(oldDistance)<=boundary && boundary<=Math.abs(newDistance)) break;
         }
         if(index==machines.size()) return "nullIP";
         return machines.get(index).ip;
