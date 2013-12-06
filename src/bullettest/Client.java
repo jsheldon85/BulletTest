@@ -6,11 +6,13 @@ package bullettest;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.GraphicsDevice;
+    import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import org.jbox2d.testbed.framework.TestbedController;
 import org.jbox2d.testbed.framework.TestbedFrame;
@@ -116,6 +118,8 @@ public class Client {
                 case("Join Game"):
                     System.out.println("Join Game Button");
                     OutputAdapter.getHosts();
+                    try{ Thread.sleep(200);}
+                    catch (InterruptedException ex){Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);}
                     String joinIP = (String)JOptionPane.showInputDialog(null, "Choose a game to join...", "Join a game", JOptionPane.PLAIN_MESSAGE, null, boundary.getjoinableGamesIPList(), null);
                     if (joinIP != null){
                         System.out.println("Join Game with IP " + joinIP);

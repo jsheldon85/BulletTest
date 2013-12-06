@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package bullettest;
 
 import java.io.BufferedReader;
@@ -10,10 +6,6 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- *
- * @author Brian
- */
 class NetworkListener extends Thread{
     InputAdapter adapter;
     
@@ -26,7 +18,7 @@ class NetworkListener extends Thread{
         System.out.println("Started network listener");
         try{
             ServerSocket sock = new ServerSocket(2002);
-            while(true){//while logged in
+            while(true){
                 Socket client = sock.accept();
                 BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
                 String ipAddress = client.getInetAddress().toString().split("/")[1];

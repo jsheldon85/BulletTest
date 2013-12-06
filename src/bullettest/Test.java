@@ -101,8 +101,8 @@ public class Test extends TestbedTest {
     public synchronized void launchBomb(Vec2 position, Vec2 velocity){
         super.launchBomb(position, velocity);
         bomb = getBomb();
-        bomb.applyLinearImpulse(new Vec2(0f, 0f), new Vec2(body.getWorldCenter()));
-        System.out.println(bomb.getWorldCenter());
+        //bomb.applyLinearImpulse(new Vec2(0f, 0f), new Vec2(body.getWorldCenter()));
+        //System.out.println(bomb.getWorldCenter());
 //        System.out.println(getWorld());
         //System.out.println(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds());
     }
@@ -129,24 +129,29 @@ public class Test extends TestbedTest {
         return pixels * .1;
     }
     
-    private boolean isBombOffscreen(){
+    /*private boolean isBombOffscreen(){
         return (   bomb.getWorldCenter().x > screenWidthMeters / 2
                 || bomb.getWorldCenter().x < -(screenWidthMeters / 2)); //Don't care about y, only x
-    }
+    }*/
     
     private void sendBullet(){
         float bomb_x = bomb.getWorldCenter().x;
         String ip = (bomb.m_linearVelocity.x < 0)? boundary.getLeftAddress(bomb_x) : boundary.getRightAddress(bomb_x);
-        if(!ip.equals("nullIP")) OutputAdapter.sendObject(ip, bomb.getWorldCenter().y, bomb.getLinearVelocity().x , bomb.getLinearVelocity().y);
+        if(!ip.equals("nullIP")){
+            System.out.println("sendBullet!");
+            OutputAdapter.sendObject(ip, bomb.getWorldCenter().y, bomb.getLinearVelocity().x , bomb.getLinearVelocity().y);
+            getWorld().destroyBody(bomb);
+            bomb = null;
+        }
     }
     
-    private void bombHitEdgeLogic(){
+    /*private void bombHitEdgeLogic(){
         if(isBombOffscreen()){
             JOptionPane.showMessageDialog(null, "Linear Velocity is: " + bomb.m_linearVelocity);
             getWorld().destroyBody(bomb);
             bomb = null;
         }
-    }
+    }*/
 
   @Override
   public String getTestName() {

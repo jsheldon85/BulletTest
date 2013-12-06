@@ -97,10 +97,16 @@ public class BoundaryTest {
 
     @Test
     public void testGetLeftAddress() {
+        boundary.updateSide(node2.ip, node2);
+        assert(boundary.getLeftAddress(node2.distance).equals(node2.ip));
     }
 
     @Test
     public void testGetRightAddress() {
+        boundary.updateSide(node0.ip, node0);
+        assert(boundary.getRightAddress(node0.distance).equals(node0.ip));
+        boundary.updateSide(node2.ip, node2);
+        assert(boundary.getRightAddress(node0.distance).equals(node0.ip));
     }
     
     private boolean stringArraysEqual(String[] actual, String[] expected){

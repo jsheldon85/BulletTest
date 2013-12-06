@@ -170,7 +170,7 @@ public class TestPanelJ2D extends JPanel implements TestbedPanel {
 
   public boolean render() {
     if (dbImage == null) {
-      log.debug("dbImage is null, creating a new one");
+      //log.debug("dbImage is null, creating a new one");
       if (panelWidth <= 0 || panelHeight <= 0) {
         return false;
       }

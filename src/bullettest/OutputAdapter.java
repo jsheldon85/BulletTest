@@ -21,40 +21,44 @@ public class OutputAdapter {
     
     public static void joinGame(String hostIP, String absDistance){
         String[] args = {"joinGame", hostIP, absDistance};
-        encodeRequest(args, true);
+        encodeServerRequest(args);
     }
     
     public static void leaveGame(String hostIP){
         if(isHost && hostIP.equals(IP)) isHost=false;
         String[] args = {"leaveGame", hostIP};
-        encodeRequest(args, true);
+        encodeServerRequest(args);
     }
     
     public static void changeDistance(String absDistance){
         String[] args = {"changeDistance", absDistance};
-        encodeRequest(args, true);
+        encodeServerRequest(args);
     }
     
     public static void hostGame(String absDistance){
         if(!isHost){
             isHost = true;
             String[] args = {"hostGame", absDistance};
-            encodeRequest(args, true); //command | distance
+            encodeServerRequest(args); //command | distance
         }
     }
     
     public static void sendObject(String ip, Float pos_x, Float vel_x, Float vel_y){
         String[] args = {"createObject", pos_x.toString(), vel_x.toString(), vel_y.toString()};
-        encodeRequest(args, false, ip);
+        encodeClientRequest(args, ip);
     }
     
     public static void getHosts(){
         String[] args = {"getHosts"};
-        encodeRequest(args, true);
+        encodeServerRequest(args);
     }
     
-    private static void encodeRequest(String[] params, Boolean toServer){
-        encodeRequest(params, toServer, serverIp);
+    private static void encodeServerRequest(String[] params){
+        encodeRequest(params, true, serverIp);
+    }
+    
+    private static void encodeClientRequest(String[] params, String ipAddress){
+        encodeRequest(params, false, ipAddress);
     }
     
     private static void encodeRequest(String[] params, Boolean toServer, String ipAddress){        
@@ -68,7 +72,7 @@ public class OutputAdapter {
     
     private static void send(Boolean toServer, String ip, String message) {
         try {
-            Socket s = null;
+            Socket s;
             if (toServer) s = new Socket(serverIp, 2004);  //Clients on 2002 Servers on 2004
             else          s = new Socket(ip, 2002);
             PrintWriter out = new PrintWriter(s.getOutputStream(), true);

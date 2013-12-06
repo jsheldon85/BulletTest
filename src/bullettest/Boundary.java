@@ -60,7 +60,7 @@ public class Boundary {
     public void updateJoinableGames(String[] newIPList){
         ArrayList<String> newJoinableGamesIPList = new ArrayList();
         for(String ip : newIPList){
-            if(!joinableGamesIPList.contains(ip)) newJoinableGamesIPList.add(ip);
+            if(!presentGamesIPList.contains(ip)) newJoinableGamesIPList.add(ip);
         }
         joinableGamesIPList = newJoinableGamesIPList;
     }
@@ -77,7 +77,9 @@ public class Boundary {
         ArrayList<Machine> machines = isRight? rightMachines:leftMachines;
         int index=0;
         for(; index<machines.size(); index++){
-            if(machines.get(index).distance==distance) break;
+            //if(machines.get(index).distance==distance) break;
+            if(isRight) if(machines.get(index).distance<=distance) break;
+            else if(machines.get(index).distance>=distance) break;
         }
         if(index==machines.size()) return "nullIP";
         return machines.get(index).ip;
