@@ -14,6 +14,9 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.testbed.framework.TestbedSettings;
 import org.jbox2d.testbed.framework.TestbedTest;
 import javax.swing.JOptionPane;
+import java.awt.Toolkit;
+import org.jbox2d.collision.shapes.CircleShape;
+import org.jbox2d.collision.shapes.EdgeShape;
 
 
 /**
@@ -34,31 +37,41 @@ public class Test extends TestbedTest {
     }
     
     public void initTest(boolean argDeserialized) {
-    
+        screenHeightMeters = pixelToMeter(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
+        screenWidthMeters = pixelToMeter(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width);
+        System.out.println("Screen width in meters:" + screenWidthMeters);
+        System.out.println("Screen height in meters:" + screenHeightMeters);
         setTitle("Angry Physics");
         
-        getWorld().setGravity(new Vec2(0, 0));
+        getWorld().setGravity(new Vec2(0, -19.6f));
         float timeStep = 1.0f / 60.f;
         int velocityIterations = 10;
         int positionIterations = 8;
         //getWorld().Step(timeStep, velocityIterations, positionIterations);
     
+        BodyDef bd = new BodyDef();
+        Body ground = getWorld().createBody(bd);
+        EdgeShape shape = new EdgeShape();
+        shape.set(new Vec2((float)(-screenWidthMeters/2), -30.0f), new Vec2((float)(screenWidthMeters/2), -30.0f));
+        ground.createFixture(shape, 0.0f);
+        
 
-    //for (int i = 0; i < 10; i++) {
-        PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(1, 1);
+    for (int i = 0; i < 10; i++) {
+        CircleShape polygonShape = new CircleShape();
+        polygonShape.setRadius(1);
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DYNAMIC;
-        //bodyDef.position.set(-10, 0);
-        //bodyDef.angle = (float) (Math.PI / 4 * i);
+        bodyDef.position.set(0, 0-i*2);
+        bodyDef.angle = (float) (Math.PI / 4 * i);
         bodyDef.allowSleep = false;
         body = getWorld().createBody(bodyDef);
         body.createFixture(polygonShape, 5f);
-        screenHeightMeters = pixelToMeter(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
-        screenWidthMeters = pixelToMeter(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width);
-        System.out.println("Screen width in meters:" + screenWidthMeters);
-        System.out.println("Screen height in meters:" + screenHeightMeters);
+        body.getFixtureList().setRestitution(.75f);
+    }
+        
+        
+
 
         //body.applyLinearImpulse(new Vec2(0, 500), new Vec2(getWorld().getBodyList().getWorldCenter()));
       
@@ -100,8 +113,10 @@ public class Test extends TestbedTest {
       
     @Override
     public synchronized void launchBomb(Vec2 position, Vec2 velocity){
+        //Toolkit.getDefaultToolkit().beep();
         super.launchBomb(position, velocity);
         bomb = getBomb();
+        bomb.getFixtureList().setRestitution(.5f);
         //bomb.applyLinearImpulse(new Vec2(0f, 0f), new Vec2(body.getWorldCenter()));
         //System.out.println(bomb.getWorldCenter());
 //        System.out.println(getWorld());

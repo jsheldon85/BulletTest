@@ -40,7 +40,10 @@ public class Client {
     public static void setAbsDistance(String newDistance){
         //TO USE DIALOG BOX PASS IN EMPTY STRING
         while(newDistance.equals("")){
-            newDistance = JOptionPane.showInputDialog("Input absolute distance");
+            Float temp = Float.parseFloat(JOptionPane.showInputDialog("Input absolute distance in inches"));
+            temp *= 9.6f;
+            temp /= 2f;
+            newDistance = temp.toString();
             if(newDistance==null) return;
             try{
                 Float.parseFloat(newDistance);
@@ -142,6 +145,7 @@ public class Client {
                     break;
                 case("Help"):
                     System.out.println("Help Button");
+                    JOptionPane.showMessageDialog(null, "Shift-Click +  drag mouse to aim\nRelease to fire");
                     break;
             }
         }

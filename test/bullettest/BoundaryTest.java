@@ -28,8 +28,8 @@ public class BoundaryTest {
     public void setUp() {
         boundary = new Boundary();
         //System.out.println(boundary.getPresentGamesIPList());
-        node0 = new Machine("0.0.0.0", 0.1);
-        node1 = new Machine("0.0.0.0", 1);
+        node0 = new Machine("0.0.0.0", 5);
+        node1 = new Machine("0.0.0.0", 10);
         node2 = new Machine("0.0.0.2", -2);
     }
     
@@ -55,21 +55,21 @@ public class BoundaryTest {
         boundary.updateSide(node0.ip, node0);
         String[] expPresentGames0 = {node0.ip};
         assert(stringArraysEqual(boundary.getPresentGamesIPList(),expPresentGames0));
-        assert(boundary.getRightAddress(node0.distance).equals(node0.ip));
-        assert(boundary.getLeftAddress(node0.distance).equals("nullIP"));
+        assert(boundary.getRightAddress(Math.abs(node0.distance)-1, Math.abs(node0.distance)+1).equals(node0.ip));
+        assert(boundary.getLeftAddress(Math.abs(node0.distance)-1, Math.abs(node0.distance)+1).equals("nullIP"));
         
         boundary.updateSide(node1.ip, node1);
         String[] expPresentGames1 = {node1.ip};
         assert(stringArraysEqual(boundary.getPresentGamesIPList(),expPresentGames1));
-        assert(boundary.getRightAddress(node1.distance).equals(node1.ip));
-        assert(boundary.getLeftAddress(node1.distance).equals("nullIP"));
+        assert(boundary.getRightAddress(Math.abs(node1.distance)-1, Math.abs(node1.distance)+1).equals(node1.ip));
+        assert(boundary.getLeftAddress(Math.abs(node1.distance)-1, Math.abs(node1.distance)+1).equals("nullIP"));
         
         boundary.updateSide(node2.ip, node2);
         String[] expPresentGames2 = {node1.ip, node2.ip};
         assert(stringArraysEqual(boundary.getPresentGamesIPList(),expPresentGames2));
-        assert(boundary.getRightAddress(node1.distance).equals(node1.ip));
-        assert(boundary.getLeftAddress(node1.distance).equals("nullIP"));
-        assert(boundary.getLeftAddress(node2.distance).equals(node2.ip));
+        assert(boundary.getRightAddress(Math.abs(node1.distance)-1, Math.abs(node1.distance)+1).equals(node1.ip));
+        assert(boundary.getLeftAddress(Math.abs(node1.distance)-1, Math.abs(node1.distance)+1).equals("nullIP"));
+        assert(boundary.getLeftAddress(Math.abs(node2.distance)-1, Math.abs(node2.distance)+1).equals(node2.ip));
     }
 
     @Test
@@ -98,15 +98,15 @@ public class BoundaryTest {
     @Test
     public void testGetLeftAddress() {
         boundary.updateSide(node2.ip, node2);
-        assert(boundary.getLeftAddress(node2.distance).equals(node2.ip));
+        assert(boundary.getLeftAddress(Math.abs(node2.distance)-1, Math.abs(node2.distance)+1).equals(node2.ip));
     }
 
     @Test
     public void testGetRightAddress() {
         boundary.updateSide(node0.ip, node0);
-        assert(boundary.getRightAddress(node0.distance).equals(node0.ip));
+        assert(boundary.getRightAddress(Math.abs(node0.distance)-1, Math.abs(node0.distance)+1).equals(node0.ip));
         boundary.updateSide(node2.ip, node2);
-        assert(boundary.getRightAddress(node0.distance).equals(node0.ip));
+        assert(boundary.getRightAddress(Math.abs(node0.distance)-1, Math.abs(node0.distance)+1).equals(node0.ip));
     }
     
     private boolean stringArraysEqual(String[] actual, String[] expected){
