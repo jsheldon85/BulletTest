@@ -40,13 +40,12 @@ public class Client {
     public static void setAbsDistance(String newDistance){
         //TO USE DIALOG BOX PASS IN EMPTY STRING
         while(newDistance.equals("")){
-            Float temp = Float.parseFloat(JOptionPane.showInputDialog("Input absolute distance in inches"));
-            temp *= 9.6f;
-            temp /= 2f;
-            newDistance = temp.toString();
+
             if(newDistance==null) return;
             try{
-                Float.parseFloat(newDistance);
+                Float temp = Float.parseFloat(JOptionPane.showInputDialog("Input absolute distance in inches"));
+                temp *= (9.6f/2f);
+                newDistance = temp.toString();
             }
             catch(Exception e){
                 JOptionPane.showMessageDialog(new JFrame(), "Distance must be a valid decimal number");
